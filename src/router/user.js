@@ -8,9 +8,10 @@ module.exports = (app) =>{
   app.post('/upload',usercontroller.upload)
   app.post('/insert',usercontroller.insert)
   app.post('/login',usercontroller.login)
-  app.get('/auth',middleware.details)
-  app.delete('/alldetails',usercontroller.alldetails)
-  app.get('/detail/:id',usercontroller.detail)
+  app.get('/details',usercontroller.details)
+  app.get('/querystringname',usercontroller.querystringname)
+  app.get('/alldetails',usercontroller.alldetails)
+  //app.get('/detail/:id',usercontroller.detail)
   app.patch('/update/:id',usercontroller.update)
   app.delete('/delete/:id',usercontroller.delete)
 }
