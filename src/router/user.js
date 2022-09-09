@@ -6,6 +6,7 @@ const middleware = require("../middleware/auth");
 
 module.exports = (app) =>{
   app.post('/upload',usercontroller.upload)
+ //app.post('/upload',usercontroller.upload)
   app.post('/insert',usercontroller.insert)
   app.post('/login',usercontroller.login)
   app.get('/details',usercontroller.details)

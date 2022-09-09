@@ -3,6 +3,7 @@ const conn = require("../config/conn");
 const user_schema = require("../model/user_schema");
 const path = require("path");
 const upload = require('express-fileupload');
+
 var fs = require("fs");
 const router = new express.Router();
 const http = require("http");
@@ -73,6 +74,8 @@ exports.upload = async function (req, res) {
     })
   }
 }
+
+       
 exports.insert = async function (req, res) {
   const password = req.body.password;
   const encryptedPassword = await bcrypt.hash(password, saltRounds)
