@@ -16,22 +16,22 @@ const saltRounds = 10;
 const signupValidation = require("../config/conn");
 const jwt = require('jsonwebtoken');
 
-const xlsx = require('xlsx');
-//const wb = xlsx.readFile("./data/1663128661324-customer.xlsx",{cellDates:true});
-const wb = xlsx.readFile("./data/1663128661324-customer.xlsx", { dateNF: "DD/MM/YY" });
-console.log(wb.SheetNames);
-const ws = wb.Sheets['Sheet1'];
-//console.log(ws);
-const data = xlsx.utils.sheet_to_json(ws, { raw: false });
-console.log(data);
-let newData = [];
-newData = data.map((d) => {
-  if (d.paid == "TRUE") d.paid = true;
-  if (d.paid == "FALSE") d.paid = false;
-  return d;
-});
-//fs.writeFileSync("./datajson.json",JSON.strignify(newData,null,2))
-fs.writeFileSync("./datajson.json", JSON.stringify(newData, null, 2))
+// const xlsx = require('xlsx');
+
+// //const wb = xlsx.readFile("./data/1663128661324-customer.xlsx",{cellDates:true});
+// const wb = xlsx.readFile("./data/1663128661324-customer.xlsx", { dateNF: "DD/MM/YY" });
+// console.log(wb.SheetNames);
+// const ws = wb.Sheets['Sheet1'];
+// //console.log(ws);
+// const data = xlsx.utils.sheet_to_json(ws, { raw: false });
+// console.log(data);
+// let newData = [];
+// newData = data.map((d) => {
+//   if (d.paid == "TRUE") d.paid = true;
+//   if (d.paid == "FALSE") d.paid = false;
+//   return d;
+// 3
+
 
 //uplaod excel using auth midddleware   
 exports.excel = auth, (req, res) => {
