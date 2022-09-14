@@ -1,0 +1,42 @@
+[
+  {
+    "name": "ram",
+    "email": "ram@gmail.com",
+    "phone_number": "9099156846",
+    "age": "23",
+    "gender": "male",
+    "photo": "got it",
+    "birth_date": "30--09-1998",
+    "password": "ram"
+  },
+  {
+    "name": "sita",
+    "email": "sita@gmail.com",
+    "phone_number": "9974965845",
+    "age": "21",
+    "gender": "female",
+    "photo": "got it",
+    "birth_date": "21/09/99",
+    "password": "sita"
+  },
+  {
+    "name": "krishna",
+    "email": "krishna@gmail.com",
+    "phone_number": "9265942019",
+    "age": "15",
+    "gender": "male",
+    "photo": "got it",
+    "birth_date": "05/08/06",
+    "password": "krishna"
+  },
+  {
+    "name": "radha",
+    "email": "radha@gmail.com",
+    "phone_number": "6353253627",
+    "age": "14",
+    "gender": "femlae",
+    "photo": "got it",
+    "birth_date": "30/06/01",
+    "password": "radha"
+  }
+]
