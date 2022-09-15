@@ -30,7 +30,7 @@ const jwt = require('jsonwebtoken');
 //   if (d.paid == "TRUE") d.paid = true;
 //   if (d.paid == "FALSE") d.paid = false;
 //   return d;
-// 3
+// 
 
 
 //uplaod excel using auth midddleware   
@@ -135,6 +135,19 @@ exports.login = function (request, response) {
     response.end();
   }
 };
+// get all user
+exports.all= function (req,res)  {
+  let sqlquery=`select * from customers`;
+  conn.query(sqlquery,function(error,result,fields){
+
+  if (error) throw error;
+  res.send(result);
+  //res.status(200).json(result);
+  //console.log("check you got it");
+  });
+
+}
+
 //verify token using middelware
 exports.details = auth, (req, res) => {
   res.status(200).send("");

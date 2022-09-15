@@ -10,6 +10,7 @@ module.exports = (app) =>{
  app.post('/excel', usercontroller.excel)
  app.post('/insert',usercontroller.insert)
   app.post('/login',usercontroller.login)
+  app.get('/all',usercontroller.all)
   app.get('/details',usercontroller.details)
   app.get('/querystringname',usercontroller.querystringname)
   app.get('/alldetails',usercontroller.alldetails)
