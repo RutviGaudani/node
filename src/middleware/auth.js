@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const multer = require("multer");
+//const multer = require("multer");
 const verifyToken = function (req, res) {
     const token = req.headers["x-access-token"];
     if (!token) {
@@ -19,27 +19,27 @@ const verifyToken = function (req, res) {
       });
     }
   }
-  const uploadXLSX =  function (req, res) {
-    var storage = multer.diskStorage({
-      destination: function (req, file, cb) {
-        cb(null, "data");
-      },
-      filename: function (req, file, cb) {
-        cb(null, Date.now() + "-" + file.originalname);
-      },
-    });
-  var excelfile = multer({ 
-    storage: storage,
-    }).single("excel");       
-  excelfile(req,res,function(err) {
-  if(err) {
-        res.send(err)
-    }
-    else {
-        res.send("Success, file uploaded!")
-    }
-  })
-}
+//   const uploadXLSX =  function (req, res) {
+//     var storage = multer.diskStorage({
+//       destination: function (req, file, cb) {
+//         cb(null, "data");
+//       },
+//       filename: function (req, file, cb) {
+//         cb(null, Date.now() + "-" + file.originalname);
+//       },
+//     });
+//   var excelfile = multer({ 
+//     storage: storage,
+//     }).single("excel");       
+//   excelfile(req,res,function(err) {
+//   if(err) {
+//         res.send(err)
+//     }
+//     else {
+//         res.send("Success, file uploaded!")
+//     }
+//   })
+// }
 
 module.exports=verifyToken;
-module.exports=uploadXLSX;
+//module.exports=uploadXLSX;

@@ -7,7 +7,7 @@ const middleware = require("../middleware/auth");
 module.exports = (app) =>{
   
  app.post('/image',usercontroller.image)
- app.post('/excel', usercontroller.excel)
+ app.post('/excel', usercontroller.readexcel)
  app.post('/insert',usercontroller.insert)
   app.post('/login',usercontroller.login)
   app.get('/all',usercontroller.all)

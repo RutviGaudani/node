@@ -15,68 +15,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const signupValidation = require("../config/conn");
 const jwt = require('jsonwebtoken');
-
-// const xlsx = require('xlsx');
-
-// //const wb = xlsx.readFile("./data/1663128661324-customer.xlsx",{cellDates:true});
-// const wb = xlsx.readFile("./data/1663128661324-customer.xlsx", { dateNF: "DD/MM/YY" });
-// console.log(wb.SheetNames);
-// const ws = wb.Sheets['Sheet1'];
-// //console.log(ws);
-// const data = xlsx.utils.sheet_to_json(ws, { raw: false });
-// console.log(data);
-// let newData = [];
-// newData = data.map((d) => {
-//   if (d.paid == "TRUE") d.paid = true;
-//   if (d.paid == "FALSE") d.paid = false;
-//   return d;
-// 
-
-
-//uplaod excel using auth midddleware   
-exports.excel = auth, (req, res) => {
-  res.status(200).send("");
-}
-//uplaod image
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    // iamges is the Upload_folder_name
-    cb(null, "images")
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + file.originalname);
-  }
-})
-var Uploads = multer({
-  storage: storage,
-  fileFilter: function (req, file, cb) {
-
-    // Set the filetypes, it is optional
-    var filetypes = /jpeg|jpg|png/;
-    var mimetype = filetypes.test(file.mimetype);
-
-    var extname = filetypes.test(path.extname(
-      file.originalname).toLowerCase());
-
-    if (mimetype && extname) {
-      return cb(null, true);
-    }
-
-    cb("Error: File upload only supports the "
-      + "following filetypes - " + filetypes);
-  }
-}).single("file");
-
-exports.image = function (req, res, next) {
-  Uploads(req, res, function (err) {
-    if (err) {
-      res.send(err)
-    }
-    else {
-      res.send("Success, Image uploaded!")
-    }
-  })
-}
+ const reader = require('xlsx');
 exports.insert = async function (req, res) {
   const password = req.body.password;
   const encryptedPassword = await bcrypt.hash(password, saltRounds)
@@ -93,7 +32,6 @@ exports.insert = async function (req, res) {
   conn.query(`INSERT INTO customers (name, email, phone_number, age , gender ,photo, birth_date,password) VALUES ('${user_schema.name}','${user_schema.email}','${user_schema.phone_number}','${user_schema.age}','${user_schema.gender}','${user_schema.photo}','${user_schema.birth_date}','${user_schema.password}')`, (err, data) => {
     if (err) {
       console.log("error: ", err);
-
       return;
     }
     console.log("created student: ");
@@ -116,7 +54,6 @@ exports.login = function (request, response) {
         // console.log('results.password' + results[0].password);
         let matchPassword = await bcrypt.compare(password, results[0].password);
         if (matchPassword) {
-
           const jsontoken = jsonwebtoken.sign({ user_id: results[0].id }, 'GKGKGKGK');
           response.json({ token: jsontoken });
           //request.session.login = true;
@@ -135,19 +72,50 @@ exports.login = function (request, response) {
     response.end();
   }
 };
-// get all user
-exports.all= function (req,res)  {
-  let sqlquery=`select * from customers`;
-  conn.query(sqlquery,function(error,result,fields){
-
-  if (error) throw error;
-  res.send(result);
-  //res.status(200).json(result);
-  //console.log("check you got it");
-  });
-
+//uplaod image
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    // iamges is the Upload_folder_name
+    cb(null, "images")
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + file.originalname);
+  }
+})
+var Uploads = multer({
+  storage: storage,
+  fileFilter: function (req, file, cb) {
+    // Set the filetypes, it is optional
+    var filetypes = /jpeg|jpg|png/;
+    var mimetype = filetypes.test(file.mimetype);
+    var extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+    if (mimetype && extname) {
+      return cb(null, true);
+    }
+    cb("Error: File upload only supports the "
+    + "following filetypes - " + filetypes);
+  }
+}).single("file");
+exports.image = function (req, res, next) {
+  Uploads(req, res, function (err) {
+    if (err) {
+      res.send(err)
+    }
+    else {
+      res.send("Success, Image uploaded!")
+    }
+  })
 }
-
+// get all user
+exports.all = function (req, res) {
+  let sqlquery = `select * from customers`;
+  conn.query(sqlquery, function (error, result, fields) {
+if (error) throw error;
+    res.send(result);
+    //res.status(200).json(result);
+    //console.log("check you got it");
+  });
+}
 //verify token using middelware
 exports.details = auth, (req, res) => {
   res.status(200).send("");
@@ -164,7 +132,6 @@ exports.alldetails = async function (req, res) {
   console.log('name: ' + req.query.id)
   //  res.send(user_schema);
 };
-
 exports.querystringname = async function (req, res) {
   var id = req.query.id;
   var name = req.query.name;
@@ -196,4 +163,64 @@ exports.delete = function (req, res) {
     return res.send({ error: false, data: results, message: 'User has been updated successfully.' });
   });
 };
+//uplaod excel using auth midddleware   
+// exports.excel = auth, (req, res) => {
+//   res.status(200).send("");
+// }
+exports.readexcel = function (req, res) {
+  // Reading our test file  
+  let data = []
+  try {
+var storage = multer.diskStorage({
+      destination: function (req, file, cb) {
+        cb(null, "data");
+      },
+      filename: function (req, file, cb) {
+        let upfileName = Date.now() + "-" + file.originalname;
+        req.upfileName = upfileName;
+        cb(null, upfileName);
+      },
+    });
+    var excelfile = multer({
+      storage: storage,
+    }).single("excel");
+    excelfile(req, res, function (err) {
+      console.log('upfileName ' + req.upfileName);
+      const file = reader.readFile('./data/' + req.upfileName);
+      const sheets = file.SheetNames;
+      console.log('sheets ' + sheets);
+     for (let i = 0; i < sheets.length; i++) {
+        const temp = reader.utils.sheet_to_json(file.Sheets[file.SheetNames[i]])
+        temp.forEach((res) => {
+          //console.log('res: '+JSON.stringify(res));
+          data.push(res);
+          var user_schema = {
+            name : res.name ,
+            email: res.email,
+            phone_number: res.phone_number,
+            age: res.age,
+            gender: res.gender,
+            photo: res.photo,
+            birth_date: res.birth_date,
+          }
+conn.query(`INSERT INTO customers (name, email, phone_number, age , gender ,photo, birth_date) VALUES ('${user_schema.name}','${user_schema.email}','${user_schema.phone_number}','${user_schema.age}','${user_schema.gender}','${user_schema.photo}','${user_schema.birth_date}')`, (err, data) => {
+            if (err) {
+              console.log("error: ", err);
+              return;
+            } else {
+            // console.log(user_schema);
+            // res.send(data);
+            }
+          })
+        })
+        console.log("data updated in database");
+        res.send(data);
+      }
+    });
+ }
+  catch (err) {
+    res.send(err);
+  }
+}
+
 
